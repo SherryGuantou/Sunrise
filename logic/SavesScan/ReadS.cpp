@@ -1,5 +1,8 @@
 #include "ReadS.h"
 
+#include"logic/Game.h"
+
+
 /*
 *此处需要保证 in 是以“Player”为根的Json
 *没有错误检验！！！
@@ -19,6 +22,7 @@ Player ReadS::getPlayer(Json::Value & in)
 	tPlayer.MP_Limit = in["MPL"].asInt();
 	tPlayer.Le = in["level"].asInt();
 	tPlayer.Exp = in["Exp"].asInt();
+	tPlayer.Gold = in["Gold"].asInt();
 	int  temp = 0;
 	for (auto nItem : in["Bag"]) {
 		tPlayer.Bag[temp++] = getItem(nItem);
@@ -68,4 +72,20 @@ Item ReadS::getItem(Json::Value & in)
 	pItem.AP = in["AP"].asInt();
 	pItem.PC = in["PC"].asInt();
 	return pItem;
+}
+
+LevelData ReadS::getLevelData(Json::Value & in)
+{
+	LevelData tlevel;
+	tlevel.AC = in["AC"].asInt();
+	tlevel.AD = in["AD"].asInt();
+	tlevel.AP = in["AP"].asInt();
+	tlevel.PC = in["PC"].asInt();
+	tlevel.HP = in["HP"].asInt();
+	tlevel.HP_Limit = in["HPL"].asInt();
+	tlevel.MP = in["MP"].asInt();
+	tlevel.MP_Limit = in["MPL"].asInt();
+	tlevel.Exp_Limit = in["ExpL"].asInt();
+
+	return tlevel;
 }

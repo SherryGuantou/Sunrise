@@ -49,7 +49,6 @@ public:
 	void Input(std::string Cmd);
 	void Print(std::string Msg);
 };
-static AutoRun<void()> Pre_ConsoleManager {[]() {ConsoleManager::Get(); }};
 
 #define CONSOLE_KEY_PRE private: \
 bool ShellOpened;

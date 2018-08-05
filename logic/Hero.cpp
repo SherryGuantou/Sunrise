@@ -39,7 +39,7 @@ int Hero::GetPC() {
 }
 
 void AI::Action() {
-	Game::Get()->GetBattle()->AIAttack();
+	Game::Get().GetBattle()->AIAttack();
 }
 
 void Player::Action() {

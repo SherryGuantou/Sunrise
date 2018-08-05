@@ -5,6 +5,7 @@
 
 #include"logic/Game.h"
 #include"logic/ConsoleManager.h"
+#include"logic/SavesScan/SaveS.h"
 
 BattleTime::BattleTime(
 	unsigned int tLevel, 
@@ -12,9 +13,9 @@ BattleTime::BattleTime(
 	std::function<void()> tUpdateCallback,
 	std::function<void(bool)> tResultCallback) {
 
-	P1 = Game::Get()->MainPlayer;
+	P1 = Game::Get().MainPlayer;
 	P1.ShowTable = tShowCallback;
-	P2 = Game::Get()->Levels[tLevel].Boss;
+	P2 = Game::Get().Levels[tLevel].Boss;
 	isPlayerTurn = false;
 	UpdateCallback = tUpdateCallback;
 	ResultCallback = tResultCallback;
@@ -29,9 +30,11 @@ void BattleTime::Damage(Hero* From, Hero* To) {
 	else {
 		if(To->AI) {
 			Victory();
+			return;
 		}
 		else {
 			Defeat();
+			return;
 		}
 	}
 
@@ -60,22 +63,29 @@ void BattleTime::AIAttack() {
 }
 
 void BattleTime::Victory() {
+	HasBeenShut = true;
 	auto game = Game::Get();
-	auto battle = Game::Get()->GetBattle();
-	game->MainPlayer.Exp += game->Levels[ThisLevel].Exp;
-	game->MainPlayer.Gold += game->Levels[ThisLevel].Gold;
+	auto battle = Game::Get().GetBattle();
+	game.MainPlayer.Exp += game.Levels[ThisLevel].Exp;
+	game.MainPlayer.Gold += game.Levels[ThisLevel].Gold;
 
 	//处理战利品
-	for (auto nItem : game->Levels[ThisLevel].Leaves) {
+	for (auto nItem : game.Levels[ThisLevel].Leaves) {
 		float tRand = std::rand() / RAND_MAX;
 		if (tRand > nItem.pro) {
-			game->MainPlayer.Items.push_back(nItem.item);
+			game.MainPlayer.Items.push_back(nItem.item);
 			Results.push_back(nItem.item.name);
 		}
 	}
 
+	SacveS::Save(game.MainPlayer);
 	ResultCallback(true);
 }
 
 void BattleTime::Defeat() {
+	HasBeenShut = true;
+	auto game = Game::Get();
+
+	SacveS::Save(game.MainPlayer);
+	ResultCallback(false);
 }

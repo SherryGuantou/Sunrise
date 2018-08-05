@@ -20,6 +20,7 @@ public:
 	bool isPlayerTurn;
 	unsigned int ThisLevel;
 	std::vector<std::string> Results;
+	bool HasBeenShut = false;
 
 	std::function<void()> UpdateCallback;
 	std::function<void(bool tResult)> ResultCallback;

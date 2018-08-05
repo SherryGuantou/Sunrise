@@ -17,8 +17,11 @@ bool TableLayer::init() {
 		CreateDefaultButton("Attack", Vec2(340, 400), Size(120, 60),
 		[this](Ref*, ui::Widget::TouchEventType type) {
 			if(type == ui::Widget::TouchEventType::BEGAN) {
+				if (Game::Get().GetBattle()->HasBeenShut) {
+					return;
+				}
 				this->setVisible(false);
-				Game::Get()->GetBattle()->PlayerAttack();
+				Game::Get().GetBattle()->PlayerAttack();
 			}
 		},
 		T("¹¥»÷"), FONTS_KAI));
@@ -36,8 +39,8 @@ bool TableLayer::init() {
 }
 
 void TableLayer::Update() {
-	const Player& p1 = Game::Get()->GetBattle()->P1;
-	const auto& p2 = Game::Get()->GetBattle()->P2;
+	const Player& p1 = Game::Get().GetBattle()->P1;
+	const auto& p2 = Game::Get().GetBattle()->P2;
 
 	PlayerLabel->setString(std::to_string(p1.HP) + "/" + std::to_string(p1.HP_Limit) + "\n" +
 						   std::to_string(p1.MP) + "/" + std::to_string(p1.MP_Limit)

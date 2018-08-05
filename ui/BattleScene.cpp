@@ -39,7 +39,7 @@ bool BattleScene::init() {
 	this->addChild(Table);
 
 	//BeginBattle
-	Game::Get()->BeginBattle(
+	Game::Get().BeginBattle(
 		ThisLevel, 
 		std::bind(&BattleScene::ShowTable, this), 
 		std::bind(&TableLayer::Update, Table),
@@ -49,7 +49,7 @@ bool BattleScene::init() {
 	//Keyboard
 	CONSOLE_KEY;
 
-	Game::Get()->GetBattle()->ThisLevel = ThisLevel;
+	Game::Get().GetBattle()->ThisLevel = ThisLevel;
 
 	return true;
 }

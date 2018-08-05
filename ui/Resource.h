@@ -20,6 +20,7 @@
 #define DIR_CONFIG std::string("Config/")
 #define CONFIG_LEVEL DIR_CONFIG + std::string("Levels.json")
 #define CONFIG_SAVE DIR_CONFIG + std::string("Saves.json")
+#define CONFIG_LEVELDATA DIR_CONFIG + std::string("LevelData.json")
 
 inline cocos2d::ui::Button* CreateDefaultButton(std::string Name, cocos2d::Vec2 Pos, cocos2d::Size Size, std::function<void(cocos2d::Ref*, cocos2d::ui::Widget::TouchEventType)> TouchEvent,
 												std::string Title, std::string Font, float FontSize = 32, cocos2d::Color3B FontColor = cocos2d::Color3B::BLACK) {

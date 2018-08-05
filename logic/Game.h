@@ -8,18 +8,22 @@
 #include"runtime/Autorun.h"
 #include"logic/Level.h"
 #include"logic/BattleTime.h"
+#include"logic/LevelData.h"
+
 
 class Game {
 private:
 	Game();
 public:
 	~Game() = default;
-	static Game* Get();
+	static Game& Get();
 
 	/* Data */
 public:
 	Player MainPlayer;
 	std::vector<Level> Levels;
+	std::vector<LevelData> LevelDatas;
+
 public:
 	void Read();
 	void Save();
@@ -38,4 +42,3 @@ public:
 		std::function<void(bool)> tResultCallback);
 	void EndBattle();
 };
-static AutoRun<void()> Pre_Game {[]() {Game::Get(); }};

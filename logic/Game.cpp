@@ -30,9 +30,9 @@ Game::Game() {
 	);
 }
 
-Game * Game::Get() {
+Game & Game::Get() {
 	static Game t;
-	return &t;
+	return t;
 }
 
 void Game::Read() {
@@ -76,6 +76,13 @@ void Game::Read() {
 		MainPlayer.Bag[temp] = getItem(nItem);
 		temp++;
 	}*/
+
+	//levelData
+	name = cocos2d::FileUtils::getInstance()->fullPathForFilename(CONFIG_LEVELDATA);
+	R.parse(std::fstream(name), Root);
+	for (auto tLevel : Root["Data"]) {
+		Game::Get().LevelDatas.push_back(ReadS::getLevelData(tLevel));
+	}
 }
 
 void Game::Save() {
