@@ -5,16 +5,14 @@
 #include<map>
 #include<functional>
 
-#include"runtime/Autorun.h"
+#include"runtime/Singletion.h"
 
 class ConsoleLayer;
 
 class ConsoleManager {
+	SINGLETION_CLASS_WITH_INIT(ConsoleManager);
 private:
-	ConsoleManager();
-public:
-	~ConsoleManager() = default;
-	static ConsoleManager* Get();
+	void Init();
 
 private:
 	struct Console {

@@ -5,13 +5,13 @@
 #include"logic/Item.h"
 #include"logic/Hero.h"
 
-class SacveS {
+class SaveS {
 public:
-	SacveS() = delete;
-	~SacveS() = delete;
+	SaveS() = delete;
+	~SaveS() = delete;
 
 public:
-	static void saveItem(Json::Value &in,Item &tItem);
+	static void saveItem(Json::Value &in, Item &tItem);
 
 	static void savePlayer(Json::Value &in, Player &tPlayer);
 	static void saveAI(Json::Value &in, AI &tAI);

@@ -8,14 +8,13 @@
 #include"logic/SavesScan/SaveS.h"
 
 BattleTime::BattleTime(
-	unsigned int tLevel, 
-	std::function<void()> tShowCallback, 
+	unsigned int tLevel,
+	std::function<void()> tShowCallback,
 	std::function<void()> tUpdateCallback,
 	std::function<void(bool)> tResultCallback) {
-
-	P1 = Game::Get().MainPlayer;
+	P1 = GET(Game)MainPlayer;
 	P1.ShowTable = tShowCallback;
-	P2 = Game::Get().Levels[tLevel].Boss;
+	P2 = GET(Game)Levels[tLevel].Boss;
 	isPlayerTurn = false;
 	UpdateCallback = tUpdateCallback;
 	ResultCallback = tResultCallback;
@@ -64,21 +63,20 @@ void BattleTime::AIAttack() {
 
 void BattleTime::Victory() {
 	HasBeenShut = true;
-	auto game = Game::Get();
-	auto battle = Game::Get().GetBattle();
-	game.MainPlayer.Exp += game.Levels[ThisLevel].Exp;
-	game.MainPlayer.Gold += game.Levels[ThisLevel].Gold;
+	auto battle = GET(Game)GetBattle();
+	GET(Game)MainPlayer.Exp += GET(Game)Levels[ThisLevel].Exp;
+	GET(Game)MainPlayer.Gold += GET(Game)Levels[ThisLevel].Gold;
 
 	//处理战利品
-	for (auto nItem : game.Levels[ThisLevel].Leaves) {
+	for(auto nItem : GET(Game)Levels[ThisLevel].Leaves) {
 		float tRand = std::rand() / RAND_MAX;
-		if (tRand > nItem.pro) {
-			game.MainPlayer.Items.push_back(nItem.item);
+		if(tRand > nItem.pro) {
+			GET(Game)MainPlayer.Items.push_back(nItem.item);
 			Results.push_back(nItem.item.name);
 		}
 	}
 
-	SacveS::Save(game.MainPlayer);
+	SaveS::Save(GET(Game)MainPlayer);
 	ResultCallback(true);
 }
 
@@ -86,6 +84,6 @@ void BattleTime::Defeat() {
 	HasBeenShut = true;
 	auto game = Game::Get();
 
-	SacveS::Save(game.MainPlayer);
+	SaveS::Save(GET(Game)MainPlayer);
 	ResultCallback(false);
 }

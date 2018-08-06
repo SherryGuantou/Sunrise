@@ -8,20 +8,20 @@
 
 #include"logic/ConsoleManager.h"
 #include"logic/SavesScan/ReadS.h"
-#include"runtime/Others.h"
+#include"runtime/RapidFuncs.h"
 #include"runtime/Macros.h"
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 
-Game::Game() {
+void Game::Init() {
 	Read();
-	ConsoleManager::Get()->
+	GET(ConsoleManager)
 		AddCommand("/back", 0,
 				   [](std::vector<std::string>)->bool {
 					   cocos2d::Director::getInstance()->popScene();
 					   return true;
 				   }
 	);
-	ConsoleManager::Get()->
+	GET(ConsoleManager)
 		AddCommand("/exit", 0,
 				   [](std::vector<std::string>)->bool {
 					   cocos2d::Director::getInstance()->end();
@@ -30,15 +30,10 @@ Game::Game() {
 	);
 }
 
-Game & Game::Get() {
-	static Game t;
-	return t;
-}
-
 void Game::Read() {
 	Json::Value Root;
 	Json::Reader R;
-	std::string name = cocos2d::FileUtils::getInstance()->fullPathForFilename(CONFIG_LEVEL);
+	std::string name = cocos2d::FileUtils::getInstance()->fullPathForFilename(Resource::Config::Levels);
 	R.parse(std::fstream(name), Root);
 
 	for(auto t : Root["Level"]) {
@@ -46,7 +41,7 @@ void Game::Read() {
 		tLevel.LevelName = t["Name"].asString();
 
 		Json::Value& boss = t["Boss"];
-		tLevel.Boss=ReadS::getAI(boss);
+		tLevel.Boss = ReadS::getAI(boss);
 
 		for(auto le : t["Leaves"]) {
 			Item lea = getItem(le);
@@ -61,7 +56,7 @@ void Game::Read() {
 	}
 
 	//player
-	name = cocos2d::FileUtils::getInstance()->fullPathForFilename(CONFIG_SAVE);
+	name = cocos2d::FileUtils::getInstance()->fullPathForFilename(Resource::Config::Saves);
 	R.parse(std::fstream(name), Root);
 	Json::Value& p = Root["Player"];
 	MainPlayer = ReadS::getPlayer(p);
@@ -78,10 +73,10 @@ void Game::Read() {
 	}*/
 
 	//levelData
-	name = cocos2d::FileUtils::getInstance()->fullPathForFilename(CONFIG_LEVELDATA);
+	name = cocos2d::FileUtils::getInstance()->fullPathForFilename(Resource::Config::LevelData);
 	R.parse(std::fstream(name), Root);
-	for (auto tLevel : Root["Data"]) {
-		Game::Get().LevelDatas.push_back(ReadS::getLevelData(tLevel));
+	for(auto tLevel : Root["Data"]) {
+		this->LevelDatas.push_back(ReadS::getLevelData(tLevel));
 	}
 }
 
@@ -103,12 +98,11 @@ BattleTime * Game::GetBattle() {
 	return Battle;
 }
 
-void Game::BeginBattle(unsigned int tLevel, 
-	std::function<void()> tShowCallback, 
-	std::function<void()> tUpdateCallback,
-	std::function<void(bool)> tResultCallback) {
-
-	Battle = new BattleTime(tLevel, tShowCallback, tUpdateCallback,tResultCallback);
+void Game::BeginBattle(unsigned int tLevel,
+					   std::function<void()> tShowCallback,
+					   std::function<void()> tUpdateCallback,
+					   std::function<void(bool)> tResultCallback) {
+	Battle = new BattleTime(tLevel, tShowCallback, tUpdateCallback, tResultCallback);
 	Battle->ExchangeTurn();
 }
 

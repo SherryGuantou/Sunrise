@@ -1,10 +1,10 @@
 #include"ConsoleManager.h"
 
 #include"ui/ConsoleLayer.h"
-#include"runtime/Others.h"
+#include"runtime/RapidFuncs.h"
 #include"runtime/Macros.h"
 
-ConsoleManager::ConsoleManager() {
+void ConsoleManager::Init() {
 	CmdOutput = T("Sunrise Console");
 	AddCommand("/help", 0,
 			   [&](std::vector<std::string>)->bool {
@@ -12,11 +12,6 @@ ConsoleManager::ConsoleManager() {
 				   return true;
 			   }
 	);
-}
-
-ConsoleManager* ConsoleManager::Get() {
-	static ConsoleManager t;
-	return &t;
 }
 
 bool ConsoleManager::AddConsole(ConsoleLayer* tConsoleLayer, std::function<void()> tOutputCallback) {

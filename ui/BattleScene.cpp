@@ -2,7 +2,7 @@
 
 #include<functional>
 
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 #include"ui/ConsoleLayer.h"
 #include"ui/TableLayer.h"
 #include"runtime/Macros.h"
@@ -29,7 +29,7 @@ bool BattleScene::init() {
 	auto VisionSize = Director::getInstance()->getVisibleSize();
 
 	//Background
-	auto Background = Sprite::create(DIR_IMAGES + "BattleBG.jpg");
+	auto Background = Sprite::create(Resource::Assets::Images::BattleBG);
 	Background->setPosition(Vec2(VisionSize.width / 2, VisionSize.height / 2));
 	Background->setContentSize(VisionSize);
 	this->addChild(Background);
@@ -39,17 +39,17 @@ bool BattleScene::init() {
 	this->addChild(Table);
 
 	//BeginBattle
-	Game::Get().BeginBattle(
-		ThisLevel, 
-		std::bind(&BattleScene::ShowTable, this), 
+	GET(Game)BeginBattle(
+		ThisLevel,
+		std::bind(&BattleScene::ShowTable, this),
 		std::bind(&TableLayer::Update, Table),
-		std::bind(&BattleScene::ShowResult,this,std::placeholders::_1)
+		std::bind(&BattleScene::ShowResult, this, std::placeholders::_1)
 	);
 
 	//Keyboard
 	CONSOLE_KEY;
 
-	Game::Get().GetBattle()->ThisLevel = ThisLevel;
+	GET(Game)GetBattle()->ThisLevel = ThisLevel;
 
 	return true;
 }
@@ -58,8 +58,7 @@ void BattleScene::ShowTable() {
 	Table->setVisible(true);
 }
 
-void BattleScene::ShowResult(bool tResult)
-{
+void BattleScene::ShowResult(bool tResult) {
 	Result = ResultLayer::create(tResult);
 	this->addChild(Result);
 }

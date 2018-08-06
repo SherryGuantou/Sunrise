@@ -3,10 +3,10 @@
 #include<ui/CocosGUI.h>
 
 #include"ui/CharacterScene.h"
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 #include"ui/ConsoleLayer.h"
 #include"ui/LevelScene.h"
-#include"runtime/Others.h"
+#include"runtime/RapidFuncs.h"
 #include"logic/ConsoleManager.h"
 
 USING_NS_CC;
@@ -23,7 +23,7 @@ bool MainScene::init() {
 	CONSOLE_KEY;
 
 	//Background
-	auto Background = Sprite::create(DIR_IMAGES + "Background.png");
+	auto Background = Sprite::create(Resource::Assets::Images::BackGround);
 	Background->setPosition(Vec2(VisionSize.width / 2, VisionSize.height / 2));
 	Background->setContentSize(VisionSize);
 	this->addChild(Background);
@@ -35,7 +35,7 @@ bool MainScene::init() {
 						   Director::getInstance()->pushScene(LevelScene::create());
 					   }
 				   },
-				   T("出发"), FONTS_KAI, 32, Color3B(0, 0, 0))
+				   T("出发"), Resource::Assets::Fonts::Kai)
 	);
 
 	//CharacterButton
@@ -54,7 +54,7 @@ bool MainScene::init() {
 						   CharWidgetOpened = !CharWidgetOpened;
 					   }
 				   },
-				   T("人物"), FONTS_KAI, 32, Color3B(0, 0, 0))
+				   T("人物"), Resource::Assets::Fonts::Kai)
 	);
 
 	//BagButton
@@ -64,7 +64,7 @@ bool MainScene::init() {
 						   //TODO: BagLayer
 					   }
 				   },
-				   T("背包"), FONTS_KAI, 32, Color3B(0, 0, 0))
+				   T("背包"), Resource::Assets::Fonts::Kai)
 	);
 
 	//ShopButton
@@ -73,7 +73,7 @@ bool MainScene::init() {
 					   if(type == ui::Widget::TouchEventType::BEGAN) {
 					   }
 				   },
-				   T("商店"), FONTS_KAI, 32, Color3B(0, 0, 0))
+				   T("商店"), Resource::Assets::Fonts::Kai)
 	);
 
 	//ExitButton
@@ -84,7 +84,7 @@ bool MainScene::init() {
 						   Director::getInstance()->end();
 					   }
 				   },
-				   T("退出"), FONTS_KAI, 32, Color3B(0, 0, 0))
+				   T("退出"), Resource::Assets::Fonts::Kai, 32, Color3B(0, 0, 0))
 	);
 
 	return true;
