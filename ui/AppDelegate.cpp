@@ -40,6 +40,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto frameSize = glview->getFrameSize();
 	director->setContentScaleFactor(MIN(frameSize.width / designResolutionSize.width, frameSize.height / designResolutionSize.height));
 
+	//Init the Singleton Class
+	GET(Game)Get();
+	GET(ConsoleManager)Get();
+
 	//Run
 	director->runWithScene(MainScene::create());
 

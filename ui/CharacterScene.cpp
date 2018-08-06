@@ -3,8 +3,9 @@
 #include<ui/CocosGUI.h>
 
 #include"ui/ConsoleLayer.h"
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 #include"runtime/Macros.h"
+#include"runtime/RapidFuncs.h"
 
 USING_NS_CC;
 
@@ -22,7 +23,7 @@ bool CharacterScene::init() {
 						   break;
 					   }
 				   },
-				   T("<-"), FONTS_KAI, 32, Color3B(0, 0, 0)));
+				   T("<-"), Resource::Assets::Fonts::Kai, 32, Color3B(0, 0, 0)));
 
 	//Key
 	CONSOLE_KEY;
@@ -36,12 +37,12 @@ bool CharacterWidget::init() {
 	auto BackGround = LayerColor::create(Color4B::GRAY, 400, 500);
 	this->addChild(BackGround);
 
-	auto CharNameLabel = Label::createWithTTF(CharName, FONTS_KAI, 32);
+	auto CharNameLabel = Label::createWithTTF(CharName, Resource::Assets::Fonts::Kai, 32);
 	CharNameLabel->setPosition(Vec2(66, 466));
 	CharNameLabel->setContentSize(Size(300, 40));
 	this->addChild(CharNameLabel);
 
-	auto CharPhotoSprite = Sprite::create(DIR_IMAGES + "Button_Normal.png");
+	auto CharPhotoSprite = Sprite::create(Resource::Assets::Images::ButtonNormal);
 	CharPhotoSprite->setPosition(79, 340);
 	CharPhotoSprite->setContentSize(Size(133, 182));
 	this->addChild(CharPhotoSprite);

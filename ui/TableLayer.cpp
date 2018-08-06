@@ -1,7 +1,8 @@
 #include "TableLayer.h"
 
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 #include"runtime/Macros.h"
+#include"runtime/RapidFuncs.h"
 #include"logic/Game.h"
 
 USING_NS_CC;
@@ -17,21 +18,21 @@ bool TableLayer::init() {
 		CreateDefaultButton("Attack", Vec2(340, 400), Size(120, 60),
 		[this](Ref*, ui::Widget::TouchEventType type) {
 			if(type == ui::Widget::TouchEventType::BEGAN) {
-				if (Game::Get().GetBattle()->HasBeenShut) {
+				if(GET(Game)GetBattle()->HasBeenShut) {
 					return;
 				}
 				this->setVisible(false);
-				Game::Get().GetBattle()->PlayerAttack();
+				GET(Game)GetBattle()->PlayerAttack();
 			}
 		},
-		T("¹¥»÷"), FONTS_KAI));
+		T("¹¥»÷"), Resource::Assets::Fonts::Kai));
 
 	//Labels
-	PlayerLabel = Label::createWithTTF("abc", FONTS_KAI, 20);
+	PlayerLabel = Label::createWithTTF("abc", Resource::Assets::Fonts::Kai, 20);
 	PlayerLabel->setPosition(Vec2(140, 300));
 	this->addChild(PlayerLabel);
 
-	AILabel = Label::createWithTTF("def", FONTS_KAI, 20);
+	AILabel = Label::createWithTTF("def", Resource::Assets::Fonts::Kai, 20);
 	AILabel->setPosition(Vec2(700, 300));
 	this->addChild(AILabel);
 
@@ -39,8 +40,8 @@ bool TableLayer::init() {
 }
 
 void TableLayer::Update() {
-	const Player& p1 = Game::Get().GetBattle()->P1;
-	const auto& p2 = Game::Get().GetBattle()->P2;
+	const Player& p1 = GET(Game)GetBattle()->P1;
+	const auto& p2 = GET(Game)GetBattle()->P2;
 
 	PlayerLabel->setString(std::to_string(p1.HP) + "/" + std::to_string(p1.HP_Limit) + "\n" +
 						   std::to_string(p1.MP) + "/" + std::to_string(p1.MP_Limit)

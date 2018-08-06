@@ -1,9 +1,9 @@
 #include"ConsoleLayer.h"
 
 #include"logic/ConsoleManager.h"
-#include"runtime/Others.h"
+#include"runtime/RapidFuncs.h"
 #include"runtime/Macros.h"
-#include"ui/Resource.h"
+#include"runtime/Resource.h"
 
 USING_NS_CC;
 
@@ -11,7 +11,7 @@ bool ConsoleLayer::init() {
 	if(!Layer::init()) {
 		return false;
 	}
-	HisPos = ConsoleManager::Get()->GetInput()->size();
+	HisPos = GET(ConsoleManager)GetInput()->size();
 	auto VisibleSize = Director::getInstance()->getVisibleSize();
 
 	//Background
@@ -24,7 +24,7 @@ bool ConsoleLayer::init() {
 	this->addChild(OutputBackground);
 
 	//InputTextField
-	InputTextField = ui::TextField::create(T("Type commands here."), FONTS_CONSOLA, 20);
+	InputTextField = ui::TextField::create(T("Type commands here."), Resource::Assets::Fonts::Consola, 20);
 	InputTextField->setAnchorPoint(Vec2(0, 0));
 	InputTextField->setInsertText(true);
 	InputTextField->setInsertText(true);
@@ -49,7 +49,7 @@ bool ConsoleLayer::init() {
 	this->addChild(InputScrollView);
 
 	//OutputLabel
-	OutputLabel = Label::createWithTTF(T(""), FONTS_CONSOLA, 20);
+	OutputLabel = Label::createWithTTF(T(""), Resource::Assets::Fonts::Consola, 20);
 	OutputLabel->setAnchorPoint(Vec2(0, 0));
 	OutputLabel->setColor(Color3B(255, 255, 255));
 
@@ -66,10 +66,10 @@ bool ConsoleLayer::init() {
 	//KeyboardEvent
 	auto key = EventListenerKeyboard::create();
 	key->onKeyPressed = [this](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event * event) {
-		auto Size = ConsoleManager::Get()->GetInput()->size();
+		auto Size = GET(ConsoleManager)GetInput()->size();
 		if(keyCode == EventKeyboard::KeyCode::KEY_ENTER) {
 			if(InputTextField->getString() != "") {
-				ConsoleManager::Get()->Input(InputTextField->getString());
+				GET(ConsoleManager)Input(InputTextField->getString());
 				InputTextField->setString("");
 				ResetInput();
 				ResetOutput();
@@ -92,7 +92,7 @@ bool ConsoleLayer::init() {
 				InputTextField->setString("");
 			}
 			else {
-				InputTextField->setString((*(ConsoleManager::Get()->GetInput()))[HisPos]);
+				InputTextField->setString((*(GET(ConsoleManager)GetInput()))[HisPos]);
 			}
 		}
 		if(keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW) {
@@ -109,17 +109,17 @@ bool ConsoleLayer::init() {
 				InputTextField->setString("");
 			}
 			else {
-				InputTextField->setString((*(ConsoleManager::Get()->GetInput()))[HisPos]);
+				InputTextField->setString((*(GET(ConsoleManager)GetInput()))[HisPos]);
 			}
 		}
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(key, this->InputTextField);
 
 	//ConsoleManager
-	ConsoleManager::Get()->
+	GET(ConsoleManager)
 		AddConsole(this,
 				   [&]() {
-					   this->OutputLabel->setString(*ConsoleManager::Get()->GetOutput());
+					   this->OutputLabel->setString(*GET(ConsoleManager)GetOutput());
 					   ResetInput();
 					   ResetOutput();
 				   }
@@ -130,7 +130,7 @@ bool ConsoleLayer::init() {
 }
 
 ConsoleLayer::~ConsoleLayer() {
-	ConsoleManager::Get()->RemoveConsole(this);
+	GET(ConsoleManager)RemoveConsole(this);
 }
 
 void ConsoleLayer::ResetInput() {

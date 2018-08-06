@@ -5,18 +5,15 @@
 
 #include"jsoncpp/json/value.h"
 
-#include"runtime/Autorun.h"
+#include"runtime/Singletion.h"
 #include"logic/Level.h"
 #include"logic/BattleTime.h"
 #include"logic/LevelData.h"
 
-
 class Game {
+	SINGLETION_CLASS_WITH_INIT(Game);
 private:
-	Game();
-public:
-	~Game() = default;
-	static Game& Get();
+	void Init();
 
 	/* Data */
 public:
@@ -36,9 +33,9 @@ public:
 	BattleTime * GetBattle();
 	/* Battle: Interface to UI */
 public:
-	void BeginBattle(unsigned int tLevel, 
-		std::function<void()> tShowCallback, 
-		std::function<void()> tUpdateCallback,
-		std::function<void(bool)> tResultCallback);
+	void BeginBattle(unsigned int tLevel,
+					 std::function<void()> tShowCallback,
+					 std::function<void()> tUpdateCallback,
+					 std::function<void(bool)> tResultCallback);
 	void EndBattle();
 };
